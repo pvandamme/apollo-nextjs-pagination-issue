@@ -12,7 +12,6 @@ const GET_LAUCHES = gql(`
 `);
 
 export default function PaginatedQuery() {
-  const [isPending, startTransition] = useTransition();
   const { error, data, fetchMore } = useSuspenseQuery<{
     histories: { details: string }[];
   }>(GET_LAUCHES, {
@@ -28,14 +27,12 @@ export default function PaginatedQuery() {
   }
 
   const fetchMoreData = () => {
-    startTransition(() => {
-      fetchMore({
-        variables: {
-          // SpaceX api broken so i have to do this
-          limit: data.histories.length + 1,
-          offset: data.histories.length,
-        },
-      });
+    fetchMore({
+      variables: {
+        // SpaceX api broken so i have to do this
+        limit: data.histories.length + 1,
+        offset: data.histories.length,
+      },
     });
   };
 
@@ -48,7 +45,7 @@ export default function PaginatedQuery() {
           style={{
             marginTop: '1rem',
             padding: '1rem',
-            border: isPending ? '1px solid red' : '1px solid black',
+            border: '1px solid black',
           }}
         >
           {history.details}
