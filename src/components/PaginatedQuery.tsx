@@ -1,7 +1,7 @@
-'use client'
-import { gql } from '@apollo/client'
-import { useSuspenseQuery } from '@apollo/experimental-nextjs-app-support/ssr'
-import { useEffect, useTransition } from 'react'
+'use client';
+import { gql } from '@apollo/client';
+import { useSuspenseQuery } from '@apollo/experimental-nextjs-app-support/ssr';
+import { useEffect, useTransition } from 'react';
 
 const GET_LAUCHES = gql(`
   query Lauches($limit: Int, $offset: Int) {
@@ -9,22 +9,22 @@ const GET_LAUCHES = gql(`
      details
     }
   }
-`)
+`);
 
 export default function PaginatedQuery() {
-  const [isPending, startTransition] = useTransition()
+  const [isPending, startTransition] = useTransition();
   const { error, data, fetchMore } = useSuspenseQuery<{
-    histories: { details: string }[]
+    histories: { details: string }[];
   }>(GET_LAUCHES, {
     variables: { limit: 1, offset: 0 },
-  })
+  });
 
   useEffect(() => {
-    console.log('Data length :', data.histories.length)
-  }, [data])
+    console.log('Data length :', data.histories.length);
+  }, [data]);
 
   if (error) {
-    return <div>Error: {error.message}</div>
+    return <div>Error: {error.message}</div>;
   }
 
   const fetchMoreData = () => {
@@ -35,9 +35,9 @@ export default function PaginatedQuery() {
           limit: data.histories.length + 1,
           offset: data.histories.length,
         },
-      })
-    })
-  }
+      });
+    });
+  };
 
   return (
     <>
@@ -48,12 +48,12 @@ export default function PaginatedQuery() {
           style={{
             marginTop: '1rem',
             padding: '1rem',
-            border: '1px solid black',
+            border: isPending ? '1px solid red' : '1px solid black',
           }}
         >
           {history.details}
         </div>
       ))}
     </>
-  )
+  );
 }
