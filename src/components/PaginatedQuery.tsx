@@ -20,7 +20,7 @@ export default function PaginatedQuery() {
   });
 
   useEffect(() => {
-    console.log('Data length :', data.histories.length);
+    console.log('Data :', data.histories);
   }, [data]);
 
   if (error) {
